@@ -1,0 +1,28 @@
+#Optwon
+#Gman (IRC Client from the Gman box) Personality Core
+#---
+#As characteristic of the true Gman, he lies silent and watchful, seeing everything that goes on. He is the commander of Optwon, the one that
+#coordinates the otherwise unruly swarm of bots.
+#United we stand, Divided we fall.
+#---
+
+import base_core
+import irc_core
+
+import threading
+
+from ncks import *
+
+class Gman(base_core.BaseCore):
+    def __init__(self):
+        base_core.BaseCore.__init__(self)
+        self.irc = irc_core.IRC(self, 'gmod.nebtown.info', 27033, '#Nebtwon', 'John_of_Bop', 'john', 'John Freeman')
+        self.irc_loop = threading.Thread(target=self.irc.mainloop)
+        self.irc_loop.start()
+        self.irc.msg('FUK YEAH IM JOHNFREMAN')
+        print('-- Gman core loaded. --')
+        
+    def process(self,line):
+        if 'john: quit' in line.lower():
+            self.irc.msg('yea ok fuk u guys im leving')
+            self.irc.send('QUIT :#Nebtwon')
