@@ -1,3 +1,3 @@
 @echo off
-python irc.py
+python databank.py
 pause
