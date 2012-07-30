@@ -2,6 +2,8 @@
 #Databank Library
 
 import random
+import pickle
+import os
 
 from ncks import *
 
@@ -73,6 +75,16 @@ class Databank(object):
             
         bees = ' '.join(reversed([str(x) for x in bees]))
         return bees
+        
+    def save(self,name,path='data'):
+        path = path.split('\\')
+        dir = os.path.join(*path)
+        path = os.path.join(dir,name+'.optwon')
+        if not os.path.isdir(dir):
+            os.makedirs(dir)
+        with open(path,'wb') as save:
+            pickle.dump(self,save)
+            print('--',name.upper(),'Saved. --')
 
 class Node(object):
     def __init__(self):
@@ -95,7 +107,8 @@ class Node(object):
                     p_check = 1
         if not node.parents or not p_check:
             node.parents.append(self)
-        self.nodes.append(node)
+        if not self.exists(node.value):
+            self.nodes.append(node)
         
     def exists(self,value):
         for n in self.nodes:
@@ -126,23 +139,29 @@ class Node(object):
         return random.choice(self.nodes)
         
     def __str__(self):
-        return self.value or ''
+        return self.value or ''def load(name,path='data'):
+    path = path.split('\\') + [name+'.optwon']
+    path = os.path.join(*path)
+    with open(path,'rb') as load:
+        bank = pickle.load(load)
+        print('--', name.upper(), 'Loaded. --')
+        return bank
         
 if __name__ == '__main__':
-    bank = Databank()
-    bank.parse('Your couch is not soft.')
-    bank.parse('Your couch is very unappealing.')
-    bank.parse('Your couch is very soft.')
-    bank.parse('Your mother is a mistress of the night.')
-    bank.parse('Your vase is not pretty.')
-    bank.parse('I like to eat cake.')
-    bank.parse('I like to eat apple pie.')
-    bank.parse('I like to eat ice cream.')
-    bank.parse('I like to eat ice cream cake.')
-    bank.parse('I like to eat nothing.')
-    bank.parse('My couch is awesome.')
-    bank.parse('My couch sucks.')
-    bank.parse('My vase really sucks.')
+    bank = load('aubergine','data\\aubergine')
+    # bank.parse('Your couch is not soft.')
+    # bank.parse('Your couch is very unappealing.')
+    # bank.parse('Your couch is very soft.')
+    # bank.parse('Your mother is a mistress of the night.')
+    # bank.parse('Your vase is not pretty.')
+    # bank.parse('I like to eat cake.')
+    # bank.parse('I like to eat apple pie.')
+    # bank.parse('I like to eat ice cream.')
+    # bank.parse('I like to eat ice cream cake.')
+    # bank.parse('I like to eat nothing.')
+    # bank.parse('My couch is awesome.')
+    # bank.parse('My couch sucks.')
+    # bank.parse('My vase really sucks.')
     print(bank.root.nodes)
     
     for node in bank.root.nodes:
@@ -169,3 +188,16 @@ if __name__ == '__main__':
     
     for w in words:
         print(w)
+        
+    # bank.save('Toast')
+    
+    # bank = load('aubergine','data\\aubergine')
+    
+    # words = []
+    # for i in range(10):
+        # next = bank.random2()
+        # words.append(next)
+        # print(next)
+    
+    # for w in words:
+        # print(w)

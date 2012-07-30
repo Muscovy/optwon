@@ -16,9 +16,8 @@ from ncks import *
 class Gman(base_core.BaseCore):
     def __init__(self):
         base_core.BaseCore.__init__(self)
-        self.irc = irc_core.IRC(self, 'gmod.nebtown.info', 27033, '#Nebtwon', 'John_of_Bop', 'john', 'John Freeman')
-        self.irc_loop = threading.Thread(target=self.irc.mainloop)
-        self.irc_loop.start()
+        self.irc = irc_core.IRC(self, 'John_of_Bop', 'john', 'John Freeman')
+        self.irc.start()
         self.irc.msg('FUK YEAH IM JOHNFREMAN')
         print('-- Gman core loaded. --')
         

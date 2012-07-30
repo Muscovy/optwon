@@ -4,19 +4,21 @@
 import sys
 import socket
 import time
+import threading
 
 from ncks import *
 
 class IRC(object):
-    def __init__(self, p_core, host, port, channel, nick, ident, realname):
+    def __init__(self, p_core, nick, ident, realname, host='gmod.nebtown.info', port=27033, channel='#Nebtwon'):
         self.personality_core = p_core
-        self.HOST = host #gmod.nebtown.info (IP)
-        self.PORT = port #27033 (Default is 6667)
-        self.CHANNEL = channel # #Nebtwon
         self.NICK = nick #John_of_Bop (Nickname)
         self.IDENT = ident #john (The stuff before the hostmask, I think. Like john@192.168.0.1)
         self.REALNAME = realname #John Freeman (Whois info)
+        self.HOST = host #gmod.nebtown.info (IP)
+        self.PORT = port #27033 (Default is 6667)
+        self.CHANNEL = channel # #Nebtwon
         self.readbuffer = ''
+        self.loop = threading.Thread(target=self.mainloop)
         
         self.s = socket.socket()
         self.s.connect( (self.HOST, self.PORT) )
@@ -27,6 +29,15 @@ class IRC(object):
         time.sleep(2) #Wait for the stupid history to load so that we can...
         self.s.recv(1024 * 4) #Throw away the first chunk, pretty much.
         print('-- IRC Core Loaded. --')
+        
+    def start(self):
+        self.loop.start()
+        
+    def stop(self):
+        self.loop.stop()
+        
+    def pm(self,user,msg):
+        self.send('PRIVMSG {} :{}\r\n'.format(user, msg))
         
     def msg(self, msg):
         self.send('PRIVMSG {} :{}\r\n'.format(self.CHANNEL, msg))
