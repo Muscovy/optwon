@@ -16,9 +16,9 @@ from ncks import *
 class Gman(base_core.BaseCore):
     def __init__(self):
         base_core.BaseCore.__init__(self)
-        self.irc = irc_core.IRC(self, 'John_of_Bop', 'john', 'John Freeman')
+        self.irc = irc_core.IRC(self, 'John_of_Bop', 'john', 'John Freeman') #format is USERNAME, IDENT, REALNAME
         self.irc.start()
-        self.irc.msg('FUK YEAH IM JOHNFREMAN')
+        self.irc.msg('FUK YEAH IM JOHNFREMAN') #Send message
         print('-- Gman core loaded. --')
         
     def process(self,line):

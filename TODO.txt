@@ -1,7 +1,11 @@
 Kris:
-    Add quit, channel change, nick change functions to IRC Core.
     Add Word based node search to databank.
     Add Frequency based weighting for sentence building.
     Refactor method names in databank (right now it's messy)
     Add Chance factor to Aubergine (chance to say word based node search, chance to say frequency weighted node search, chance to say random node search (both forward and reverse)
+    Add Typing delay to chatter-ers
+    Add typo-creating function to chatter-ers
+    
+    COMPLETED:
     Make modded version of Aubergine that has a on/off switch for his talk (based on PM?), then let him listen to #Nebtown for like 3 hours. Then we turn him on.
+    Add quit, channel change, nick change functions to IRC Core.

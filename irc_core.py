@@ -25,7 +25,7 @@ class IRC(object):
         self.send('NICK {}'.format(self.NICK))
         self.send('USER {} {} bla :{}'.format(self.IDENT, self.HOST, self.REALNAME))
         time.sleep(2) #Wait for USER auth to pass through
-        self.send('JOIN {}\r\n'.format(self.CHANNEL))
+        self.send('JOIN {}'.format(self.CHANNEL))
         time.sleep(2) #Wait for the stupid history to load so that we can...
         self.s.recv(1024 * 4) #Throw away the first chunk, pretty much.
         print('-- IRC Core Loaded. --')
@@ -35,6 +35,24 @@ class IRC(object):
         
     def stop(self):
         self.loop.stop()
+        
+    def quit(self,reason='leaving'):
+        self.send('QUIT :{}'.format(reason))
+        sys.exit(1)
+        
+    def setnick(self,nick):
+        self.send('NICK {}'.format(nick))
+        threading.Timer(1, self._sn, args=[nick]).start()
+        
+    def _sn(self,nick): #Never call this anywhere else I swear to god
+        self.NICK = nick
+        
+    def setchannel(self,chan):
+        self.send('PART {}'.format(self.CHANNEL))
+        self.CHANNEL = chan
+        self.send('JOIN {}'.format(self.CHANNEL))
+        time.sleep(2) #Wait for the stupid history to load so that we can...
+        self.s.recv(1024 * 4) #Throw away the first chunk, pretty much.
         
     def pm(self,user,msg):
         self.send('PRIVMSG {} :{}\r\n'.format(user, msg))
@@ -54,6 +72,7 @@ class IRC(object):
             for line in temp:
                 print(line)
                 
+                self.personality_core.standards(line)
                 self.personality_core.process(line)
                 
                 line = line.split()

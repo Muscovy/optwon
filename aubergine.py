@@ -17,7 +17,8 @@ from ncks import *
 
 class Aubergine(base_core.BaseCore):
     def __init__(self):
-        self.log = self.load() #Loads all saved logs under data\spy
+        base_core.BaseCore.__init__(self)
+        self.log = self.load() #Loads the saved log under data\aubergine
         self.irc = irc_core.IRC(self,'Aubergine', 'aubergine', 'purple')
         self.irc.start()
         self.save()
@@ -43,15 +44,12 @@ class Aubergine(base_core.BaseCore):
     def process(self,line):
         line = line.split() # :NAME!REAL_NAME@HOSTMASK TYPE (CHANNEL/USER [If PM]) :MESSAGE ///////////////// [0]NAME [1]TYPE [2]CHANNEL/USER [3]MESSAGE
         nick = line[0].split('!')[0][1:]
-        if nick is not 'Aubergine':
+        if nick is not self.irc.NICK:
             if 'privmsg' in line[1].lower():
                 text = ' '.join(line[3:])[1:]
-                if 'Aubergine' in line[2]:
-                    if 'kris' in nick:
-                        if text == 'ping':
-                            self.irc.pm(nick, 'pong')
-
-                if 'aubergine' in text.lower():
+                if self.irc.NICK in line[2]:    
+                    pass
+                elif self.irc.NICK.lower() in text.lower():
                     self.irc.msg(self.log.random2())
                 else:     
                     print('Parsing', '"'+text+'"', 'for', nick.upper())

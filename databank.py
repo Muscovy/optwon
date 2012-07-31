@@ -148,7 +148,7 @@ class Node(object):
         return bank
         
 if __name__ == '__main__':
-    bank = load('aubergine','data\\aubergine')
+    # bank = load('aubergine','data\\aubergine')
     # bank.parse('Your couch is not soft.')
     # bank.parse('Your couch is very unappealing.')
     # bank.parse('Your couch is very soft.')
@@ -162,34 +162,36 @@ if __name__ == '__main__':
     # bank.parse('My couch is awesome.')
     # bank.parse('My couch sucks.')
     # bank.parse('My vase really sucks.')
-    print(bank.root.nodes)
+    # print(bank.root.nodes)
     
-    for node in bank.root.nodes:
-        print('-'*3)
-        print(node)
-        print(node.frequency)
-        for n in node.nodes:
-            t_node = n
-            while t_node:
-                print('-'*3)
-                print('PARENT:',[x.value for x in t_node.parents])
-                print('NODE:',t_node)
-                print('FREQUENCY',t_node.frequency)
-                t_node = t_node.next()
-            print('*'*5)
-        print('='*5)
+    # for node in bank.root.nodes:
+        # print('-'*3)
+        # print(node)
+        # print(node.frequency)
+        # for n in node.nodes:
+            # t_node = n
+            # while t_node:
+                # print('-'*3)
+                # print('PARENT:',[x.value for x in t_node.parents])
+                # print('NODE:',t_node)
+                # print('FREQUENCY',t_node.frequency)
+                # t_node = t_node.next()
+            # print('*'*5)
+        # print('='*5)
     
-    print('\n\n')
-    words = []
-    for i in range(10):
-        next = bank.random2()
-        words.append(next)
-        print(next)
+    # print('\n\n')
+    # words = []
+    # for i in range(10):
+        # next = bank.random2()
+        # words.append(next)
+        # print(next)
     
-    for w in words:
-        print(w)
+    # for w in words:
+        # print(w)
         
     # bank.save('Toast')
+    
+    #/////////////////////////////////////////////////////////////////////
     
     # bank = load('aubergine','data\\aubergine')
     
@@ -201,3 +203,12 @@ if __name__ == '__main__':
     
     # for w in words:
         # print(w)
+        
+   #/////////////////////////////////////////////////////////////////////
+   
+    bank = Databank()
+    
+    bank.parse('I like to eat cake')
+    bank.parse('You like to eat cake')
+    bank.parse('I hate cake')
+    bank.parse('You love cake')
