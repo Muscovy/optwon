@@ -84,7 +84,6 @@ class Databank(object):
             os.makedirs(dir)
         with open(path,'wb') as save:
             pickle.dump(self,save)
-            print('--',name.upper(),'Saved. --')
 
 class Node(object):
     def __init__(self):

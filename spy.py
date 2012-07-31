@@ -17,7 +17,7 @@ from ncks import *class Spy(base_core.BaseCore):
     def __init__(self):
         base_core.BaseCore.__init__(self)
         self.logs = self.load() #Loads all saved logs under data\spy
-        self.irc = irc_core.IRC(self,'iloveportal', 'portal', 'purple',channel='#Nebtown')
+        self.irc = irc_core.IRC(self,'Mr. Crispy', 'crispy', 'mibbit',channel='#Nebtown')
         self.irc.start()
         self.save()
         print('-- Spy core loaded. --')

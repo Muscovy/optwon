@@ -20,7 +20,7 @@ class Noobfish(base_core.BaseCore):
         base_core.BaseCore.__init__(self)
         self.switch = 0
         self.log = self.load() #Loads all saved logs under data\noobfish
-        self.irc = irc_core.IRC(self,'Noobfish', 'noobfish', 'wut', channel='#Nebtown')
+        self.irc = irc_core.IRC(self,'Zonta', 'Z', 'ZeroCorp Terminal B', channel='#Nebtown')
         self.irc.start()
         self.save()
         print('-- Noobfish core loaded. --')
