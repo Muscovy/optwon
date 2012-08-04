@@ -73,13 +73,10 @@ class Databank(object):
         return bees
         
     def random3(self, word):
-        def f(n):
-            if word.lower() == n.value.lower():
-                return n
         bees = ''
         nodes_before = []
         nodes_after = []
-        node = self.search(f)
+        node = random.choice(self.root.exists_all(word))
         c_node = node
         if not node:
             return 'I dunno how to respond to that.'
@@ -153,6 +150,11 @@ class Node(object):
                 for s in n.nodes:
                     if s.value == value:
                         return s
+                        
+    def exists_all(self,value):
+        pie = []
+        self.trawl_list(value,pie)
+        return pie
         
     def next(self, index=0):
         if not self.nodes or self.end: return
@@ -171,6 +173,14 @@ class Node(object):
             pie = n.trawl(func)
             if pie:
                 return pie
+                
+    def trawl_list(self, value, bees): #Modified trawl, used in exists_all
+        if not self.nodes: return
+        for n in self.nodes:
+            if value.lower() == n.value.lower():
+                bees.append(n)
+                
+            n.trawl_list(value,bees)
         
     def randparent(self):
         if not self.parents: return
@@ -257,15 +267,23 @@ if __name__ == '__main__':
     
     #////////////////////////////////////////////////////////////////////
     
+    # bank = load('noobfish', 'data\\noobfish')
+    
+    # def f(n):
+        # print('day9', 'VS', n.value, 'RESULT:', 'day9' == n.value.lower())
+        # if 'day9' == n.value.lower():
+            # return n
+        
+    # x = bank.search(f)
+    
+    # print(x.value)
+    # print([str(y) for y in x.parents])
+    # print([str(y) for y in x.nodes])
+    
+    #////////////////////////////////////////////////////////////////////
+    
     bank = load('noobfish', 'data\\noobfish')
     
-    def f(n):
-        print('day9', 'VS', n.value, 'RESULT:', 'day9' == n.value.lower())
-        if 'day9' == n.value.lower():
-            return n
-        
-    x = bank.search(f)
+    x = bank.root.exists_all('kat')
     
-    print(x.value)
-    print([str(y) for y in x.parents])
-    print([str(y) for y in x.nodes])
+    print([str(y) for y in x])

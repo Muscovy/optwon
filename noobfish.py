@@ -9,6 +9,7 @@
 import threading
 import os
 import random
+import string
 
 import databank
 import irc_core
@@ -72,6 +73,7 @@ class Noobfish(base_core.BaseCore):
                         temp = text.split()
                         if len(temp) > 1:
                             temp = [x for x in temp if self.irc.NICK.lower() not in x.lower()]
+                            temp = [x for x in temp if x not in string.punctuation]
                             temp = random.choice(temp)
                             self.irc.msg(self.log.random3(temp))
                         else:
