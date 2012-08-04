@@ -8,6 +8,7 @@
 
 import threading
 import os
+import random
 
 import databank
 import irc_core
@@ -20,7 +21,7 @@ class Noobfish(base_core.BaseCore):
         base_core.BaseCore.__init__(self)
         self.switch = 0
         self.log = self.load() #Loads all saved logs under data\noobfish
-        self.irc = irc_core.IRC(self,'Zonta', 'Z', 'ZeroCorp Terminal B', channel='#Nebtown')
+        self.irc = irc_core.IRC(self,'Walter', 'walter', 'mibbit', channel='#Nebtown')
         self.irc.start()
         self.save()
         print('-- Noobfish core loaded. --')
@@ -54,7 +55,13 @@ class Noobfish(base_core.BaseCore):
                             self.switch = not self.switch
                             self.irc.pm(nick,'Changed TALK mode to ' + str(self.switch))
                         elif self.irc.NICK.lower() in text.lower():
-                            self.irc.pm(nick, self.log.random2())
+                            temp = text.split()
+                            if len(temp) > 1:
+                                temp = [x for x in temp if self.irc.NICK.lower() not in x.lower()]
+                                temp = random.choice(temp)
+                                self.irc.pm(nick, self.log.random3(temp))
+                            else:
+                                self.irc.pm(nick, self.log.random2())
                 elif self.irc.NICK.lower() not in text.lower():     
                     if 'gman' not in nick.lower():
                         print('Parsing', '"'+text+'"', 'for', nick.upper())
@@ -62,7 +69,13 @@ class Noobfish(base_core.BaseCore):
                                 
                 if self.switch:
                     if self.irc.NICK.lower() in text.lower():
-                        self.irc.msg(self.log.random2())
+                        temp = text.split()
+                        if len(temp) > 1:
+                            temp = [x for x in temp if self.irc.NICK.lower() not in x.lower()]
+                            temp = random.choice(temp)
+                            self.irc.msg(self.log.random3(temp))
+                        else:
+                            self.irc.msg(self.log.random2())
 
 if __name__ == '__main__':
     noobfish = Noobfish()

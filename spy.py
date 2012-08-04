@@ -8,6 +8,7 @@
 
 import threading
 import os
+import random
 
 import databank
 import irc_core
@@ -17,7 +18,7 @@ from ncks import *class Spy(base_core.BaseCore):
     def __init__(self):
         base_core.BaseCore.__init__(self)
         self.logs = self.load() #Loads all saved logs under data\spy
-        self.irc = irc_core.IRC(self,'Mr. Crispy', 'crispy', 'mibbit',channel='#Nebtown')
+        self.irc = irc_core.IRC(self,'MrCrispy', 'crispy', 'mibbit',channel='#Nebtown')
         self.irc.start()
         self.save()
         print('-- Spy core loaded. --')

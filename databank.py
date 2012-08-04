@@ -54,19 +54,15 @@ class Databank(object):
     def random2(self):
         bees = []
         node = self.root.randnode()
-        print('USING:',node.value)
         while node:
             temp = node.randnode()
             if not temp:
-                print('END')
                 break
-            print('TRAWL:',temp.value)
             node = temp
             if node.end:
                 break
         
         while node:
-            print('BUILD:',node.value)
             temp = node.randparent()
             if not temp: break
             if temp.end: continue
@@ -75,6 +71,43 @@ class Databank(object):
             
         bees = ' '.join(reversed([str(x) for x in bees]))
         return bees
+        
+    def random3(self, word):
+        def f(n):
+            if word.lower() == n.value.lower():
+                return n
+        bees = ''
+        nodes_before = []
+        nodes_after = []
+        node = self.search(f)
+        c_node = node
+        if not node:
+            return 'I dunno how to respond to that.'
+            
+        if node.parents:
+            while c_node:
+                c_node = c_node.randparent()
+                if not c_node: break
+                nodes_before.append(c_node)
+                
+        c_node = node
+        
+        if node.nodes:
+            while c_node:
+                c_node = c_node.randnode()
+                if not c_node: break
+                nodes_after.append(c_node)
+                
+        bees = list(reversed(nodes_before)) + [node] + nodes_after
+        bees = [str(x) for x in bees]
+        bees = filter(None, bees)
+        bees = ' '.join(bees)
+        return bees
+        
+    def search(self, func=print):
+        bees = self.root.trawl(func)
+        if bees:
+            return bees
         
     def save(self,name,path='data'):
         path = path.split('\\')
@@ -128,6 +161,16 @@ class Node(object):
     def prev(self,index=0):
         if not self.parents: return
         return self.parents[index]
+        
+    def trawl(self,func=print):
+        if not self.nodes: return
+        for n in self.nodes:
+            bees = func(n)
+            if bees:
+                return bees
+            pie = n.trawl(func)
+            if pie:
+                return pie
         
     def randparent(self):
         if not self.parents: return
@@ -205,9 +248,24 @@ if __name__ == '__main__':
         
    #/////////////////////////////////////////////////////////////////////
    
-    bank = Databank()
+    # bank = Databank()
     
-    bank.parse('I like to eat cake')
-    bank.parse('You like to eat cake')
-    bank.parse('I hate cake')
-    bank.parse('You love cake')
+    # bank.parse('I like to eat cake')
+    # bank.parse('You like to eat cake')
+    # bank.parse('I hate cake')
+    # bank.parse('You love cake')
+    
+    #////////////////////////////////////////////////////////////////////
+    
+    bank = load('noobfish', 'data\\noobfish')
+    
+    def f(n):
+        print('day9', 'VS', n.value, 'RESULT:', 'day9' == n.value.lower())
+        if 'day9' == n.value.lower():
+            return n
+        
+    x = bank.search(f)
+    
+    print(x.value)
+    print([str(y) for y in x.parents])
+    print([str(y) for y in x.nodes])
