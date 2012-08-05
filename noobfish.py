@@ -59,12 +59,17 @@ class Noobfish(base_core.BaseCore):
                             temp = text.split()
                             if len(temp) > 1:
                                 temp = [x for x in temp if self.irc.NICK.lower() not in x.lower()]
+                                temp = [x for x in temp if x not in string.punctuation]
                                 temp = random.choice(temp)
-                                self.irc.pm(nick, self.log.random3(temp))
+                                temp = self.log.random3(temp)
+                                temp = self.humanize(temp)
+                                threading.Timer(temp[1], self.irc.pm, [nick, temp[0]]).start()
                             else:
-                                self.irc.pm(nick, self.log.random2())
+                                temp = self.log.random3(temp)
+                                temp = self.humanize(temp)
+                                threading.Timer(temp[1], self.irc.pm, [nick, temp[0]]).start()
                 elif self.irc.NICK.lower() not in text.lower():     
-                    if 'gman' not in nick.lower():
+                    if 'gman' not in nick.lower() and self.irc.NICK.lower() not in text.lower():
                         print('Parsing', '"'+text+'"', 'for', nick.upper())
                         self.log.parse(text)
                                 
@@ -75,9 +80,13 @@ class Noobfish(base_core.BaseCore):
                             temp = [x for x in temp if self.irc.NICK.lower() not in x.lower()]
                             temp = [x for x in temp if x not in string.punctuation]
                             temp = random.choice(temp)
-                            self.irc.msg(self.log.random3(temp))
+                            temp = self.log.random3(temp)
+                            temp = self.humanize(temp)
+                            threading.Timer(temp[1], self.irc.msg, [temp[0]]).start()
                         else:
-                            self.irc.msg(self.log.random2())
+                            temp = self.log.random2()
+                            temp = self.humanize(temp)
+                            threading.Timer(temp[1], self.irc.msg, [temp[0]]).start()
 
 if __name__ == '__main__':
     noobfish = Noobfish()

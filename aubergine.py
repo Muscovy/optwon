@@ -57,9 +57,12 @@ class Aubergine(base_core.BaseCore):
                         temp = [x for x in temp if self.irc.NICK.lower() not in x.lower()]
                         temp = [x for x in temp if x not in string.punctuation]
                         temp = random.choice(temp)
-                        self.irc.msg(self.log.random3(temp))
+                        temp = self.humanize(self.log.random3(temp)) # Format: [<MESSAGE>, <DELAY>] str/float
+                        threading.Timer(temp[1], self.irc.msg, [temp[0]]).start()
                     else:
-                        self.irc.msg(self.log.random2())
+                        temp = self.log.random2()
+                        temp = self.humanize(temp)
+                        threading.Timer(temp[1], self.irc.msg, [temp[0]]).start()
                 else:     
                     print('Parsing', '"'+text+'"', 'for', nick.upper())
                     self.log.parse(text)
