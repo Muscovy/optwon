@@ -1,12 +1,16 @@
 #Optwon
 #Base Personality Core
 
+import random
+import string
+
 from ncks import *
 
 class BaseCore(object):
     def __init__(self):
         self.irc = None
         self.mods = ['kris', 'alex']
+        self.delaymod = [0.15, 0.5]
     
     def process(self,line):
         pass
@@ -46,4 +50,35 @@ class BaseCore(object):
                         self.irc.pm(s_text[1], ' '.join(s_text[2:]))
                     elif s_text[0] == 'msg':
                         self.irc.pm(nick, 'Sending this message to current channel: ' + ' '.join(s_text[1:]))
-                        self.irc.msg(' '.join(s_text[1:]))
+                        self.irc.msg(' '.join(s_text[1:]))    
+    def typo(self,phrase):
+        phrase = phrase.lower()
+        leopard = [
+            ['`','1','2','3','4','5','6','7','8','9','0','-','=','[*]BKSP'],
+            ['    ','q','w','e','r','t','y','u','i','o','p','[',']','\','],
+            ['[*]CAPS','a','s','d','f','g','h','j','k','l',';',"'",'[*]RETN'],
+            ['[*]SHFT','z','x','c','v','b','n','m',',','.','/','[*]SHFT'],
+            ['[*]CTRL','[*]SUPR','[*]ALTL', ' ',' ',' ',' ',' ',' ', '[*]ATLR','[*]SUPR','[*]MENU','[*]CTRL']
+        ]
+        
+        for l in phrase:
+            index = [0,0]
+            for i in range(len(leopard)):
+                row = leopard[i]
+                try:
+                    index = [i, leopard.index(l)]
+                except ValueError:
+                    
+        
+    def delay(self,phrase):
+        bees = 0
+        for i in len(phrase):
+            bees+= random.uniform(self.delaymod[0], self.delaymod[1])
+            
+        print('DELAY:', bees, '(MIN:', self.delaymod[0], 'MAX:', self.delaymod[1] + ')')
+        return bees
+    
+    def humanize(self,phrase):
+        bees = []
+        
+        

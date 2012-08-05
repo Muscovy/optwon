@@ -76,11 +76,12 @@ class Databank(object):
         bees = ''
         nodes_before = []
         nodes_after = []
-        node = random.choice(self.root.exists_all(word))
+        node = self.root.exists_all(word)
+        
+        if not node: return self.random2()
+        
+        node = random.choice(node)
         c_node = node
-        if not node:
-            return 'I dunno how to respond to that.'
-            
         if node.parents:
             while c_node:
                 c_node = c_node.randparent()
