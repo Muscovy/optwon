@@ -129,6 +129,7 @@ class Node(object):
         check = self.exists_family(node.value)
         if check:
             check.frequency+=1
+            node = check
             
         p_check = 0
         if node.parents:
@@ -192,7 +193,9 @@ class Node(object):
         return random.choice(self.nodes)
         
     def __str__(self):
-        return self.value or ''def load(name,path='data'):
+        return self.value or ''
+
+def load(name,path='data'):
     path = path.split('\\') + [name+'.optwon']
     path = os.path.join(*path)
     with open(path,'rb') as load:
@@ -283,8 +286,15 @@ if __name__ == '__main__':
     
     #////////////////////////////////////////////////////////////////////
     
-    bank = load('noobfish', 'data\\noobfish')
+    # bank = load('noobfish', 'data\\noobfish')
     
-    x = bank.root.exists_all('kat')
+    # x = bank.root.exists_all('kat')
     
-    print([str(y) for y in x])
+    # print([str(y) for y in x])
+
+    #////////////////////////////////////////////////////////////////////
+
+    bank = Databank()
+
+    bank.parse('I like cake')
+    bank.parse('I hate cake')
