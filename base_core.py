@@ -10,8 +10,8 @@ class BaseCore(object):
     def __init__(self):
         self.irc = None
         self.mods = ['kris', 'alex']
-        self.delaymod = [0.065, 0.07] #[Min, Max]
-        self.mistypemod = [0.0065, 0.00015] #[Base percent, Increment per letter] (Percent represented in decimal format)
+        self.delaymod = [0.07, 0.08] #[Min, Max]
+        self.mistypemod = [0.0060, 0.00010] #[Base percent, Increment per letter] (Percent represented in decimal format)
         
     def process(self,line):
         pass
@@ -51,9 +51,10 @@ class BaseCore(object):
                         self.irc.pm(s_text[1], ' '.join(s_text[2:]))
                     elif s_text[0] == 'msg':
                         self.irc.pm(nick, 'Sending this message to current channel: ' + '"' + ' '.join(s_text[1:]) + '"')
-                        self.irc.msg(' '.join(s_text[1:]))    
+                        self.irc.msg(' '.join(s_text[1:]))
+    
     def typo(self,phrase): #Makes typos happen
-        def trans_leopard(phrase): #This method just exchanges the unique symbols (Things preceeded with [*]) with their proper "effect".
+        def trans_leopard(phrase): #This function just exchanges the unique symbols (Things preceeded with [*]) with their proper "effect".
             bees = phrase #Make a copy of the phrase (It's an exploded array of every letter, like the word "cake" becomes ['c','a','k','e'])
             for letter in phrase:
                 if letter[0:3] == '[*]': #If its a unique symbol
@@ -90,9 +91,11 @@ class BaseCore(object):
                     bees.remove(letter) #We remove the unique symbol after.
             
             return bees #Return the exploded array.
+
         #//////////////////////////////////
+
         bees = list(phrase) #Explode the string into individual letters
-        phrase = phrase.lower() #Case insensitivity. The most CRUCIAL thing to remember is that bees and phrase are SEPARATE. This is extremely important.
+        phrase = phrase.lower() #Case insensitivity. The most CRUCIAL thing to remember is that bees and phrase are SEPARATE. This is extremely important. (Bees retains case, phrase is now "temporary")
         leopard = [ #If they weren't separate then you would have concurrency errors.
             ['`','1','2','3','4','5','6','7','8','9','0','-','=','[*]BKSP'],
             ['    ','q','w','e','r','t','y','u','i','o','p','[',']','\','],
@@ -124,7 +127,6 @@ class BaseCore(object):
                 if bees[phrase.index(l)].isupper(): #Preserve the case
                     letter = letter.upper()
                 bees[phrase.index(l)] = letter
-                print('MISTYPE:', l, 'TO', letter) #Debug prints
             
             #<OTHER MISTAKE IF STATMENTS GO HERE>
             
@@ -146,7 +148,9 @@ class BaseCore(object):
         bees.append(phrase)
         bees.append(self.delay(phrase))
         
-        return beesif __name__ == '__main__':
+        return bees #Returns in the format of [phrase to be said, delay in seconds].
+
+if __name__ == '__main__':
     gman = BaseCore()
     for i in range(10):
         bees = gman.typo('I like to eat cake.')
