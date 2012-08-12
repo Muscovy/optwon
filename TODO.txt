@@ -2,6 +2,7 @@ Kris:
     Begin work on Personality Cores.
 
 Alex:
+	Add "Line split" To humanizing functions. Allows splitting of a single sentence, distributed over several lines.
     Flesh out typos.
     
 COMPLETED:
